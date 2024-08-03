@@ -1,5 +1,6 @@
 import { PlusIcon } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function TemplateCards() {
   const templates = [
@@ -14,10 +15,13 @@ export default function TemplateCards() {
 
   return (
     <section className="flex flex-wrap gap-md">
-      <div className="p-xs flex flex-col justify-center items-center gap-sm flex-grow w-72 min-h-64 cursor-pointer transition-colors hover:bg-primary/15 bg-primary/10 rounded-lg border-2 border-primary">
+      <Link
+        href={"/dashboard/editor"}
+        className="p-xs flex flex-col justify-center items-center gap-sm flex-grow w-72 min-h-64 cursor-pointer transition-colors hover:bg-primary/15 bg-primary/10 rounded-lg border-2 border-primary"
+      >
         <PlusIcon className="icon my-0" />
         <p className="text-sm font-semibold">Create New Doc</p>
-      </div>
+      </Link>
       {templates.map((item, i) => (
         <div className="flex flex-col gap-xs p-xs flex-grow w-72 bg-light rounded-lg" key={i}>
           <Image

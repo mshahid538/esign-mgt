@@ -88,7 +88,7 @@ export default function DashboardSearchFilters() {
             <li
               onClick={() => handleViewClick(item.name)}
               key={i}
-              className={`select-none flex flex-col gap-1 p-2 w-20 justify-center items-center rounded-lg capitalize cursor-pointer ${
+              className={`select-none flex flex-col gap-1 p-2 w-20 justify-center items-center rounded-lg text-sm capitalize cursor-pointer ${
                 item.name === filters.view ? "border border-primary bg-primary/10" : "hover:bg-primary/10"
               }`}
             >
