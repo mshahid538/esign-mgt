@@ -2,32 +2,141 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+@layer base {
+  del {
+    @apply no-underline relative after:w-full after:h-[3px] after:scale-x-110 after:border-white after:border-[1px] after:bg-red-400 after:content-[''] after:absolute after:top-1/2 after:-translate-y-1/2 after:left-0 after:-rotate-12;
+  }
+  h1 {
+    @apply font-bold text-4xl md:text-5xl lg:text-6xl 2xl:text-7xl;
+  }
+  h2 {
+    @apply font-bold text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl;
+  }
+  h3 {
+    @apply font-bold text-2xl md:text-3xl lg:text-4xl 2xl:text-5xl;
+  }
+  h4 {
+    @apply font-bold text-xl md:text-2xl lg:text-3xl 2xl:text-4xl;
+  }
+  h5 {
+    @apply font-bold text-lg md:text-xl lg:text-2xl 2xl:text-3xl;
+  }
+  h6 {
+    @apply font-bold text-base md:text-lg lg:text-xl xl:text-2xl;
+  }
+  p {
+    @apply text-base lg:text-lg 2xl:text-xl;
+  }
+  small {
+    @apply text-xs md:text-sm;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@layer utilities {
+  .px {
+    @apply px-4 sm:px-8 md:px-16 lg:px-28 xl:px-40;
+  }
+  @media (min-width: 1280px) {
+    .px {
+      @apply px-[calc(50%-1120px/2)];
+    }
+  }
+  .py {
+    @apply py-8 md:py-10 2xl:py-20;
+  }
+  .py-sm {
+    @apply py-3 md:py-6 2xl:py-8;
+  }
+  .py-md {
+    @apply py-6 md:py-12 2xl:py-16;
+  }
+  .py-lg {
+    @apply py-10 md:py-20 2xl:py-28;
+  }
+  .px-xs {
+    @apply px-2 md:px-4;
+  }
+  .px-sm {
+    @apply px-3 md:px-6 2xl:px-8;
+  }
+  .px-md {
+    @apply px-6 md:px-8 lg:px-12 2xl:px-14;
+  }
+  .px-lg {
+    @apply px-6 md:px-12 lg:px-14 2xl:px-16;
+  }
+  .px-xl {
+    @apply px-10 md:px-20 lg:px-24 2xl:px-28;
+  }
+  .p-xs {
+    @apply p-2 md:p-4;
+  }
+  .p-sm {
+    @apply p-3 md:p-6 2xl:p-8;
+  }
+  .p-md {
+    @apply p-6 md:p-8 lg:p-12 2xl:p-14;
+  }
+  .p-lg {
+    @apply p-6 md:p-12 lg:p-14 2xl:p-16;
+  }
+  .p-xl {
+    @apply p-10 md:p-20 lg:p-24 2xl:p-28;
+  }
+  .gap-xs {
+    @apply gap-2;
+  }
+  .gap-sm {
+    @apply gap-4;
+  }
+  .gap-md {
+    @apply gap-6;
+  }
+  .gap-lg {
+    @apply gap-8;
+  }
+  .gap-xl {
+    @apply gap-10;
+  }
+  .bg-gradient {
+    @apply bg-gradient-to-br from-primary to-secondary;
+  }
+  .text-gradient {
+    @apply bg-gradient-to-br from-primary to-secondary bg-clip-text text-transparent;
+  }
+  .scroll-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scroll-none::-webkit-scrollbar {
+    display: none;
+  }
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+@layer components {
+  input,
+  select {
+    @apply rounded-lg w-full p-2 px-4 bg-light text-dark/80 accent-primary;
+  }
+  .btn {
+    @apply whitespace-nowrap select-none cursor-pointer transition-transform hover:scale-105 disabled:hover:scale-100 disabled:bg-dark/50 disabled:cursor-not-allowed rounded-lg p-2 px-4 disabled:text-light;
+  }
+  .btn-p {
+    @apply btn bg-dark/5 hover:bg-primary text-dark/80 hover:text-white;
+  }
+  .btn-s {
+    @apply btn bg-dark/5 hover:bg-secondary text-dark/80 hover:text-white;
+  }
+  .btn-light {
+    @apply btn bg-light text-dark/80;
+  }
+  .link {
+    @apply hover:text-primary w-fit;
+  }
+  .icon-sm {
+    @apply select-none w-4 h-4 my-auto;
+  }
+  .icon {
+    @apply select-none w-5 h-5 my-auto;
   }
 }
