@@ -124,6 +124,9 @@
   .btn-p {
     @apply btn bg-dark/5 hover:bg-primary text-dark/80 hover:text-white;
   }
+  .btn-p-light {
+    @apply btn hover:bg-primary/5  bg-transparent text-dark/50 hover:text-primary;
+  }
   .btn-s {
     @apply btn bg-dark/5 hover:bg-secondary text-dark/80 hover:text-white;
   }

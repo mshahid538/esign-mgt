@@ -8,6 +8,7 @@ import Link from "next/link";
 
 export default function DashboardHeader() {
   const [tabs, setTabs] = useState(["Marketing", "Marketing 001", "Marketing 002", "Marketing 003", "Marketing 004"]);
+
   return (
     <header className="flex items-center justify-between w-full">
       <nav className="flex gap-xs p-xs overflow-x-scroll scroll-none">

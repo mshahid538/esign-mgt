@@ -1,7 +1,9 @@
+import EditorHeader from "@/components/layouts/editorHeader";
+
 export default function layout({ children }) {
   return (
-    <div>
-      <h3>Editor Layout</h3>
+    <div className="h-dvh flex flex-col">
+      <EditorHeader />
       {children}
     </div>
   );

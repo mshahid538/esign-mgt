@@ -23,14 +23,20 @@ export default function TemplateCards() {
         <p className="text-sm font-semibold">Create New Doc</p>
       </Link>
       {templates.map((item, i) => (
-        <div className="flex flex-col gap-xs p-xs flex-grow w-72 bg-light rounded-lg" key={i}>
-          <Image
-            className="rounded-md w-full h-52 object-cover"
-            src={"/images/templates/" + item.image}
-            width={600}
-            height={600}
-            alt=""
-          />
+        <Link
+          href={""}
+          className="flex flex-col gap-xs p-xs flex-grow w-72 transition-colors group bg-light border-2 border-light hover:border-primary rounded-lg"
+          key={i}
+        >
+          <div className="rounded-md w-full h-52 overflow-hidden">
+            <Image
+              className="group-hover:scale-110 object-cover transition-transform"
+              src={"/images/templates/" + item.image}
+              width={800}
+              height={800}
+              alt=""
+            />
+          </div>
           <div>
             <span className="flex justify-between">
               <p className="text-sm font-semibold truncate">{item.name}</p>
@@ -38,7 +44,7 @@ export default function TemplateCards() {
             </span>
             <p className="text-xs text-dark/50">PKR. {item.price}</p>
           </div>
-        </div>
+        </Link>
       ))}
     </section>
   );
