@@ -1,10 +1,12 @@
 "use client";
 
-import { SearchIcon, UploadIcon } from "lucide-react";
+import { PanelTopCloseIcon, PanelTopOpenIcon, SearchIcon, UploadIcon } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 
 export default function EditorLeftPanel() {
+  const [panelIsOpen, setPanelIsOpen] = useState(true);
+
   const tabs = [
     { name: "pages", component: PagesComponent },
     { name: "sections", component: SectionsComponent },
@@ -14,22 +16,46 @@ export default function EditorLeftPanel() {
   const [selectedTab, setSelectedTab] = useState(tabs[0].name);
   const tab = tabs.find((tab) => tab.name === selectedTab);
 
+  const togglePanel = () => {
+    setPanelIsOpen((prev) => !prev);
+  };
+
   return (
-    <aside className="w-60 h-full overflow-scroll shadow-xl">
-      <nav className="sticky z-50 top-0 flex justify-evenly border-b-[1.5px] bg-light border-dark/20">
-        {tabs.map((tab, i) => (
-          <span
-            className={`relative cursor-pointer group hover:scale-110 transition-all py-3 select-none text-sm ${
-              selectedTab === tab.name ? "text-dark" : "text-dark/40"
-            }`}
-            key={i}
-            onClick={() => setSelectedTab(tab.name)}
-          >
-            {tab.name}
-          </span>
-        ))}
-      </nav>
-      {<tab.component />}
+    <aside
+      className={`${
+        panelIsOpen ? "h-full shadow-xl" : "absolute h-9 z-50 overflow-hidden"
+      } w-60 2xl:w-72 overflow-scroll`}
+    >
+      <div className="overflow-hidden rounded-b-lg bg-light">
+        <button
+          onClick={togglePanel}
+          className="group flex w-full items-center justify-center bg-dark/5 p-2 hover:bg-dark/10"
+        >
+          {panelIsOpen ? (
+            <PanelTopCloseIcon className="icon transition-transform group-hover:scale-110" />
+          ) : (
+            <PanelTopOpenIcon className="icon transition-transform group-hover:scale-110" />
+          )}
+        </button>
+      </div>
+      {panelIsOpen ? (
+        <>
+          <nav className="sticky top-0 z-50 flex justify-evenly border-b-[1.5px] border-dark/20 bg-light">
+            {tabs.map((tab, i) => (
+              <span
+                className={`relative cursor-pointer group hover:scale-110 transition-all py-3 select-none text-sm ${
+                  selectedTab === tab.name ? "text-dark" : "text-dark/40"
+                }`}
+                key={i}
+                onClick={() => setSelectedTab(tab.name)}
+              >
+                {tab.name}
+              </span>
+            ))}
+          </nav>
+          <tab.component />
+        </>
+      ) : null}
     </aside>
   );
 }
@@ -39,7 +65,7 @@ const PagesComponent = () => {
 
   return (
     <section className="p-xs">
-      <nav className="flex flex-col gap-xs">
+      <nav className="gap-xs flex flex-col">
         {pages.map((page, i) => (
           <button className="btn-p-light text-start text-sm" key={i}>
             {page}
@@ -59,22 +85,22 @@ const SectionsComponent = () => {
   ];
 
   return (
-    <section className="flex flex-col gap-sm p-xs">
+    <section className="gap-sm p-xs flex flex-col">
       <search className="relative flex items-center gap-2 rounded-lg">
-        <SearchIcon className="absolute ml-2.5 icon-sm" />
-        <input placeholder="Search" className="text-sm border border-dark pl-9" />
+        <SearchIcon className="icon-sm absolute ml-2.5" />
+        <input placeholder="Search" className="border border-dark pl-9 text-sm" />
       </search>
-      <div className="flex flex-col gap-xs">
+      <div className="gap-xs flex flex-col">
         {sections.map((section, i) => (
           <div
-            className="relative group flex justify-center items-center w-full h-60 rounded-lg overflow-hidden border border-dark cursor-pointer"
+            className="group relative flex h-60 w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg border border-dark"
             key={i}
           >
-            <p className="absolute z-30 opacity-0 group-hover:opacity-100 transition-opacity bg-dark/60 text-light text-sm rounded-lg p-2">
+            <p className="absolute z-30 rounded-lg bg-dark/60 p-2 text-sm text-light opacity-0 transition-opacity group-hover:opacity-100">
               {section.name}
             </p>
             <Image
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+              className="h-full w-full object-cover transition-transform group-hover:scale-105"
               src={"/images/sections/" + section.image}
               width={600}
               height={600}
@@ -91,15 +117,15 @@ const LibraryComponent = () => {
   const images = ["library-1.png", "library-2.png", "library-3.png"];
 
   return (
-    <section className="flex flex-col gap-sm p-xs">
-      <button className="flex justify-center gap-xs py-2 w-full text-sm hover:scale-105 transition-all hover:bg-primary/5 rounded-lg border-[1.5px] border-primary text-primary">
+    <section className="gap-sm p-xs flex flex-col">
+      <button className="gap-xs flex w-full justify-center rounded-lg border-[1.5px] border-primary py-2 text-sm text-primary transition-all hover:scale-105 hover:bg-primary/5">
         Upload
         <UploadIcon className="icon-sm" />
       </button>
       {images.map((image, i) => (
-        <div className="w-full h-52 rounded-lg overflow-hidden cursor-pointer" key={i}>
+        <div className="h-52 w-full cursor-pointer overflow-hidden rounded-lg" key={i}>
           <Image
-            className="hover:scale-105 transition-transform w-full h-full object-cover"
+            className="h-full w-full object-cover transition-transform hover:scale-105"
             src={"/images/library/" + image}
             width={600}
             height={600}

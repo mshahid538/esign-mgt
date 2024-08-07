@@ -1,21 +1,9 @@
-import EditorLeftPanel from "@/components/layouts/editorLeftPanel";
-import EditorRightPanel from "@/components/layouts/editorRightPanel";
-import EditorTopPanel from "@/components/layouts/editorTopPanel";
-import pdfSampleImage from "@/../public/images/pdf-example.png";
-import Image from "next/image";
+import Editor from "@/components/layouts/editor";
 
 export default function page() {
   return (
     <main className="flex flex-col h-full overflow-hidden">
-      <EditorTopPanel />
-      <div className="flex flex-1 h-full overflow-auto">
-        <EditorLeftPanel />
-        <div className="flex-1 p-4 overflow-scroll">
-          <h3>Selected PDF document goes here</h3>
-          <Image src={pdfSampleImage} alt="" />
-        </div>
-        <EditorRightPanel />
-      </div>
+      <Editor />
     </main>
   );
 }

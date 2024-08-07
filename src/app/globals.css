@@ -7,22 +7,22 @@
     @apply no-underline relative after:w-full after:h-[3px] after:scale-x-110 after:border-white after:border-[1px] after:bg-red-400 after:content-[''] after:absolute after:top-1/2 after:-translate-y-1/2 after:left-0 after:-rotate-12;
   }
   h1 {
-    @apply font-bold text-4xl md:text-5xl lg:text-6xl 2xl:text-7xl;
+    @apply text-4xl font-bold md:text-5xl lg:text-6xl 2xl:text-7xl;
   }
   h2 {
-    @apply font-bold text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl;
+    @apply text-3xl font-bold md:text-4xl lg:text-5xl 2xl:text-6xl;
   }
   h3 {
-    @apply font-bold text-2xl md:text-3xl lg:text-4xl 2xl:text-5xl;
+    @apply text-2xl font-bold md:text-3xl lg:text-4xl 2xl:text-5xl;
   }
   h4 {
-    @apply font-bold text-xl md:text-2xl lg:text-3xl 2xl:text-4xl;
+    @apply text-xl font-bold md:text-2xl lg:text-3xl 2xl:text-4xl;
   }
   h5 {
-    @apply font-bold text-lg md:text-xl lg:text-2xl 2xl:text-3xl;
+    @apply text-lg font-bold md:text-xl lg:text-2xl 2xl:text-3xl;
   }
   h6 {
-    @apply font-bold text-base md:text-lg lg:text-xl xl:text-2xl;
+    @apply text-base font-bold md:text-lg lg:text-xl xl:text-2xl;
   }
   p {
     @apply text-base lg:text-lg 2xl:text-xl;
@@ -116,30 +116,30 @@
 @layer components {
   input,
   select {
-    @apply rounded-lg w-full p-2 px-4 bg-light text-dark/80 accent-primary;
+    @apply w-full rounded-lg bg-light p-2 px-4 text-dark/80 accent-primary;
   }
   .btn {
-    @apply whitespace-nowrap select-none cursor-pointer transition-transform hover:scale-105 disabled:hover:scale-100 disabled:bg-dark/50 disabled:cursor-not-allowed rounded-lg p-2 px-4 disabled:text-light;
+    @apply inline-block cursor-pointer select-none whitespace-nowrap rounded-lg p-2 px-4 transition-transform hover:scale-105 disabled:cursor-not-allowed disabled:bg-dark/50 disabled:text-light disabled:hover:scale-100;
   }
   .btn-p {
-    @apply btn bg-dark/5 hover:bg-primary text-dark/80 hover:text-white;
+    @apply btn bg-dark/5 text-dark/80 hover:bg-primary hover:text-white;
   }
   .btn-p-light {
-    @apply btn hover:bg-primary/5  bg-transparent text-dark/50 hover:text-primary;
+    @apply btn bg-transparent text-dark/50 hover:bg-primary/5 hover:text-primary;
   }
   .btn-s {
-    @apply btn bg-dark/5 hover:bg-secondary text-dark/80 hover:text-white;
+    @apply btn bg-dark/5 text-dark/80 hover:bg-secondary hover:text-white;
   }
   .btn-light {
     @apply btn bg-light text-dark/80;
   }
   .link {
-    @apply hover:text-primary w-fit;
+    @apply w-fit hover:text-primary;
   }
   .icon-sm {
-    @apply select-none w-4 h-4 my-auto;
+    @apply my-auto h-4 w-4 select-none;
   }
   .icon {
-    @apply select-none w-5 h-5 my-auto;
+    @apply my-auto h-5 w-5 select-none;
   }
 }

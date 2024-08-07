@@ -4,6 +4,8 @@ import {
   CaseSensitiveIcon,
   ImagePlusIcon,
   ListChecksIcon,
+  PanelTopCloseIcon,
+  PanelTopOpenIcon,
   ReceiptIcon,
   SignatureIcon,
   TableIcon,
@@ -14,6 +16,8 @@ import Image from "next/image";
 import { useState } from "react";
 
 export default function EditorRightPanel() {
+  const [panelIsOpen, setPanelIsOpen] = useState(true);
+
   const tabs = [
     { name: "blocks", component: BlocksComponent },
     { name: "themes", component: ThemesComponent },
@@ -23,22 +27,48 @@ export default function EditorRightPanel() {
   const [selectedTab, setSelectedTab] = useState(tabs[0].name);
   const tab = tabs.find((tab) => tab.name === selectedTab);
 
+  const togglePanel = () => {
+    setPanelIsOpen((prev) => !prev);
+  };
+
+  console.log(panelIsOpen);
+
   return (
-    <aside className="w-60 h-full overflow-scroll shadow-xl">
-      <nav className="sticky z-50 top-0 flex justify-evenly border-b-[1.5px] bg-light border-dark/20">
-        {tabs.map((tab, i) => (
-          <span
-            className={`relative cursor-pointer group hover:scale-110 transition-all py-3 select-none text-sm ${
-              selectedTab === tab.name ? "text-dark" : "text-dark/40"
-            }`}
-            key={i}
-            onClick={() => setSelectedTab(tab.name)}
-          >
-            {tab.name}
-          </span>
-        ))}
-      </nav>
-      {<tab.component />}
+    <aside
+      className={`${
+        panelIsOpen ? "h-full shadow-xl" : "absolute right-0 h-9 z-50 overflow-hidden"
+      } w-60 2xl:w-72 overflow-scroll`}
+    >
+      <div className="overflow-hidden rounded-b-lg bg-light">
+        <button
+          onClick={togglePanel}
+          className="group flex w-full items-center justify-center bg-dark/5 p-2 hover:bg-dark/10"
+        >
+          {panelIsOpen ? (
+            <PanelTopCloseIcon className="icon transition-transform group-hover:scale-110" />
+          ) : (
+            <PanelTopOpenIcon className="icon transition-transform group-hover:scale-110" />
+          )}
+        </button>
+      </div>
+      {panelIsOpen ? (
+        <>
+          <nav className="sticky top-0 z-50 flex justify-evenly border-b-[1.5px] border-dark/20 bg-light">
+            {tabs.map((tab, i) => (
+              <span
+                className={`relative cursor-pointer group hover:scale-110 transition-all py-3 select-none text-sm ${
+                  selectedTab === tab.name ? "text-dark" : "text-dark/40"
+                }`}
+                key={i}
+                onClick={() => setSelectedTab(tab.name)}
+              >
+                {tab.name}
+              </span>
+            ))}
+          </nav>
+          <tab.component />
+        </>
+      ) : null}
     </aside>
   );
 }
@@ -57,13 +87,13 @@ const BlocksComponent = () => {
 
   return (
     <section className="p-xs">
-      <nav className="grid grid-cols-2 gap-xs">
+      <nav className="gap-xs grid grid-cols-2">
         {blocks.map((block, i) => (
           <div
-            className="flex flex-col justify-center items-center gap-xs text-sm p-xs cursor-grab rounded-lg hover:scale-105 transition-all hover:bg-primary/5 select-none"
+            className="gap-xs p-xs flex cursor-grab select-none flex-col items-center justify-center rounded-lg text-sm transition-all hover:scale-105 hover:bg-primary/5"
             key={i}
           >
-            <block.icon className="w-6 h-6 text-dark/60" />
+            <block.icon className="h-6 w-6 text-dark/60" />
             <p className="text-sm">{block.name}</p>
           </div>
         ))}
@@ -73,13 +103,29 @@ const BlocksComponent = () => {
 };
 
 const ThemesComponent = () => {
-  const themes = [];
+  const themes = [
+    {
+      name: "",
+      typography: {
+        headings: { font: "inter", style: "regular", size: 16 },
+        text: { font: "inter", style: "regular", size: 16 },
+        buttons: { font: "inter", style: "regular", size: 16 },
+        links: { font: "inter", style: "regular", size: 16 },
+        captions: { font: "inter", style: "regular", size: 16 },
+      },
+      colors: [],
+    },
+  ];
 
   return (
-    <section className="flex flex-col gap-sm p-xs">
-      <div className="flex flex-col gap-xs"></div>
+    <section className="gap-sm p-xs flex flex-col">
+      <div className="gap-xs flex flex-col"></div>
     </section>
   );
+};
+
+const Theme = ({ theme }) => {
+  return <div>{theme.name}</div>;
 };
 
 const CommentsComponent = () => {
@@ -100,10 +146,10 @@ const CommentsComponent = () => {
   ];
 
   return (
-    <section className="flex flex-col gap-sm p-xs">
+    <section className="gap-sm p-xs flex flex-col">
       {comments.map((comment, i) => (
-        <div className="flex flex-col gap-xs pb-3 border-b border-dark/40" key={i}>
-          <span className="flex gap-xs">
+        <div className="gap-xs flex flex-col border-b border-dark/40 pb-3" key={i}>
+          <span className="gap-xs flex">
             <Image src={comment.user.img} className="w-6" width={100} height={100} alt="" />
             <p className="text-sm text-dark/60">{comment.user.name}</p>
           </span>
