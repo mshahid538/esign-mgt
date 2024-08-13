@@ -11,18 +11,23 @@ export default function DashboardSidebar() {
     <section className="flex flex-col gap-md justify-between h-dvh">
       <h4 className="p-xs select-none">Logo</h4>
       <nav className="flex flex-col gap-xs p-xs overflow-y-scroll scroll-none">
-        {menus.dashboard.sidebar.map((item, i) => (
-          <Link
-            className={`${
-              pathname == item.link ? "bg-primary text-light" : "bg-transparent"
-            } text-sm btn-p flex gap-xs`}
-            href={item.link}
-            key={i}
-          >
-            <item.icon className="icon" />
-            {item.name}
-          </Link>
-        ))}
+        {menus.dashboard.sidebar.map((item, i) => {
+          const isActive =
+            item.link === "/dashboard"
+              ? pathname === item.link
+              : pathname === item.link || pathname.startsWith(item.link + "/");
+
+          return (
+            <Link
+              className={`${isActive ? "bg-primary text-light" : "bg-transparent"} text-sm btn-p flex gap-xs`}
+              href={item.link}
+              key={i}
+            >
+              <item.icon className="icon" />
+              {item.name}
+            </Link>
+          );
+        })}
       </nav>
       <br />
     </section>

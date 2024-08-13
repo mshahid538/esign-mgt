@@ -134,7 +134,7 @@
     @apply btn bg-light text-dark/80;
   }
   .link {
-    @apply w-fit hover:text-primary;
+    @apply w-fit hover:text-primary hover:underline;
   }
   .icon-sm {
     @apply my-auto h-4 w-4 select-none;
