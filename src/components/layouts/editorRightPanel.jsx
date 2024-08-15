@@ -1,11 +1,15 @@
 "use client";
 
 import {
+  ArrowLeftIcon,
   CaseSensitiveIcon,
+  GalleryVerticalIcon,
   ImagePlusIcon,
   ListChecksIcon,
+  PaletteIcon,
   PanelTopCloseIcon,
   PanelTopOpenIcon,
+  PenLineIcon,
   ReceiptIcon,
   SignatureIcon,
   TableIcon,
@@ -103,6 +107,8 @@ const BlocksComponent = () => {
 };
 
 const ThemesComponent = () => {
+  const [selectedTheme, setSelectedTheme] = useState(null);
+
   const themes = [
     {
       name: "",
@@ -119,13 +125,105 @@ const ThemesComponent = () => {
 
   return (
     <section className="gap-sm p-xs flex flex-col">
-      <div className="gap-xs flex flex-col"></div>
+      {selectedTheme ? (
+        <Theme theme={selectedTheme} setSelectedTheme={setSelectedTheme} />
+      ) : (
+        themes.map((theme, i) => (
+          <div
+            key={i}
+            className="p-xs gap-md group relative flex select-none items-center justify-center rounded-md border border-dark/50"
+          >
+            <button
+              onClick={() => setSelectedTheme(theme)}
+              className="absolute right-0 top-0 m-3 scale-0 transition-transform group-hover:scale-100"
+            >
+              <PenLineIcon className="icon-sm hover:scale-110" />
+            </button>
+            <h1 className="text-amber-300">Aa</h1>
+            <div className="gap-xs flex flex-col">
+              <div className="color-swatch bg-amber-300" />
+              <div className="color-swatch bg-teal-300" />
+              <div className="color-swatch bg-pink-300" />
+            </div>
+          </div>
+        ))
+      )}
     </section>
   );
 };
 
-const Theme = ({ theme }) => {
-  return <div>{theme.name}</div>;
+const Theme = ({ theme, setSelectedTheme }) => {
+  const [selectedSetting, setSelectedSetting] = useState(null);
+
+  const BackBtn = () => {
+    return (
+      <button
+        onClick={() => setSelectedSetting(null)}
+        className="flex w-fit transition-transform gap-2 hover:scale-105"
+      >
+        <ArrowLeftIcon className="icon-sm" />
+        <small>Back</small>
+      </button>
+    );
+  };
+
+  const Colors = (
+    <div className="gap-md flex flex-col">
+      <BackBtn />
+      <h4>Colors</h4>
+    </div>
+  );
+
+  const Typography = (
+    <div className="gap-md flex flex-col">
+      <BackBtn />
+      <h4>Typography</h4>
+    </div>
+  );
+
+  const Layout = (
+    <div className="gap-md flex flex-col">
+      <BackBtn />
+      <h4>Layout</h4>
+    </div>
+  );
+
+  const settings = [
+    { name: "Typography", component: Typography, icon: <CaseSensitiveIcon className="icon-sm" /> },
+    { name: "Colors", component: Colors, icon: <PaletteIcon className="icon-sm" /> },
+    { name: "Layout", component: Layout, icon: <GalleryVerticalIcon className="icon-sm" /> },
+  ];
+
+  if (selectedSetting) return selectedSetting.component;
+
+  return (
+    <div className="gap-md flex flex-col">
+      <button onClick={() => setSelectedTheme(null)} className="flex w-fit transition-transform gap-2 hover:scale-105">
+        <ArrowLeftIcon className="icon-sm" />
+        <small>Back</small>
+      </button>
+      <div className="p-xs gap-md relative flex select-none items-center justify-center border">
+        <h1 className="text-amber-300">Aa</h1>
+        <div className="gap-xs flex flex-col">
+          <div className="color-swatch bg-amber-300" />
+          <div className="color-swatch bg-teal-300" />
+          <div className="color-swatch bg-pink-300" />
+        </div>
+      </div>
+      <div className="gap-xs flex flex-col items-start">
+        {settings.map((setting, i) => (
+          <button
+            className="flex w-full items-center gap-2 rounded-md p-2 transition-transform hover:scale-105 hover:bg-dark/5"
+            onClick={() => setSelectedSetting(setting)}
+            key={i}
+          >
+            {setting.icon}
+            <small>{setting.name}</small>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 const CommentsComponent = () => {
