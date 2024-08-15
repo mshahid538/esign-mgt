@@ -142,4 +142,7 @@
   .icon {
     @apply my-auto h-5 w-5 select-none;
   }
+  .icon-btn{
+    @apply hover:bg-light/50 cursor-pointer h-6 w-6 rounded bg-light p-1;
+  }
 }
