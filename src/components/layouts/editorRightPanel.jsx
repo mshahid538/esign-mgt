@@ -121,6 +121,17 @@ const ThemesComponent = () => {
       },
       colors: [],
     },
+    {
+      name: "",
+      typography: {
+        headings: { font: "inter", style: "regular", size: 16 },
+        text: { font: "inter", style: "regular", size: 16 },
+        buttons: { font: "inter", style: "regular", size: 16 },
+        links: { font: "inter", style: "regular", size: 16 },
+        captions: { font: "inter", style: "regular", size: 16 },
+      },
+      colors: [],
+    },
   ];
 
   return (
