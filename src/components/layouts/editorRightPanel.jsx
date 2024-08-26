@@ -7,8 +7,6 @@ import {
   ImagePlusIcon,
   ListChecksIcon,
   PaletteIcon,
-  PanelTopCloseIcon,
-  PanelTopOpenIcon,
   PenLineIcon,
   ReceiptIcon,
   SignatureIcon,
@@ -16,8 +14,11 @@ import {
   TextSelectIcon,
   YoutubeIcon,
 } from "lucide-react";
+import { v4 as uuidv4 } from "uuid";
 import Image from "next/image";
 import { useState } from "react";
+import EditorPanelBtn from "../ui/editorPanelBtn";
+import { useEditorStore } from "@/store/store";
 
 export default function EditorRightPanel() {
   const [panelIsOpen, setPanelIsOpen] = useState(true);
@@ -35,26 +36,13 @@ export default function EditorRightPanel() {
     setPanelIsOpen((prev) => !prev);
   };
 
-  console.log(panelIsOpen);
-
   return (
     <aside
       className={`${
         panelIsOpen ? "h-full shadow-xl" : "absolute right-0 h-9 z-50 overflow-hidden"
       } w-60 2xl:w-72 overflow-scroll`}
     >
-      <div className="overflow-hidden rounded-b-lg bg-light">
-        <button
-          onClick={togglePanel}
-          className="group flex w-full items-center justify-center bg-dark/5 p-2 hover:bg-dark/10"
-        >
-          {panelIsOpen ? (
-            <PanelTopCloseIcon className="icon transition-transform group-hover:scale-110" />
-          ) : (
-            <PanelTopOpenIcon className="icon transition-transform group-hover:scale-110" />
-          )}
-        </button>
-      </div>
+      <EditorPanelBtn isOpen={panelIsOpen} onClick={togglePanel} />
       {panelIsOpen ? (
         <>
           <nav className="sticky top-0 z-50 flex justify-evenly border-b-[1.5px] border-dark/20 bg-light">
@@ -79,30 +67,38 @@ export default function EditorRightPanel() {
 
 const BlocksComponent = () => {
   const blocks = [
-    { name: "Headings", icon: CaseSensitiveIcon },
-    { name: "Paragraph", icon: TextSelectIcon },
-    { name: "Image", icon: ImagePlusIcon },
-    { name: "Video", icon: YoutubeIcon },
-    { name: "Table", icon: TableIcon },
-    { name: "List", icon: ListChecksIcon },
-    { name: "Quote", icon: ReceiptIcon },
-    { name: "Signature", icon: SignatureIcon },
+    { id: 0, name: "Headings", icon: CaseSensitiveIcon },
+    { id: 1, name: "Paragraph", icon: TextSelectIcon },
+    { id: 2, name: "Image", icon: ImagePlusIcon },
+    { id: 3, name: "Video", icon: YoutubeIcon },
+    { id: 4, name: "Table", icon: TableIcon },
+    { id: 5, name: "List", icon: ListChecksIcon },
+    { id: 6, name: "Quote", icon: ReceiptIcon },
+    { id: 7, name: "Signature", icon: SignatureIcon },
   ];
 
   return (
     <section className="p-xs">
       <nav className="gap-xs grid grid-cols-2">
         {blocks.map((block, i) => (
-          <div
-            className="gap-xs p-xs flex cursor-grab select-none flex-col items-center justify-center rounded-lg text-sm transition-all hover:scale-105 hover:bg-primary/5"
-            key={i}
-          >
-            <block.icon className="h-6 w-6 text-dark/60" />
-            <p className="text-sm">{block.name}</p>
-          </div>
+          <Block key={i} data={block} />
         ))}
       </nav>
     </section>
+  );
+};
+
+const Block = ({ data }) => {
+  const addBlock = useEditorStore((state) => state.addBlock);
+
+  return (
+    <div
+      onClick={() => addBlock({ id: uuidv4(), name: data.name, icon: data.icon })}
+      className="gap-xs p-xs flex cursor-pointer select-none flex-col items-center justify-center rounded-lg text-sm transition-all hover:scale-105 hover:bg-primary/5 active:bg-primary/20"
+    >
+      <data.icon className="h-6 w-6 text-dark/60" />
+      <p className="text-sm">{data.name}</p>
+    </div>
   );
 };
 
@@ -170,7 +166,7 @@ const Theme = ({ theme, setSelectedTheme }) => {
     return (
       <button
         onClick={() => setSelectedSetting(null)}
-        className="flex w-fit transition-transform gap-2 hover:scale-105"
+        className="flex w-fit gap-2 transition-transform hover:scale-105"
       >
         <ArrowLeftIcon className="icon-sm" />
         <small>Back</small>
@@ -209,7 +205,7 @@ const Theme = ({ theme, setSelectedTheme }) => {
 
   return (
     <div className="gap-md flex flex-col">
-      <button onClick={() => setSelectedTheme(null)} className="flex w-fit transition-transform gap-2 hover:scale-105">
+      <button onClick={() => setSelectedTheme(null)} className="flex w-fit gap-2 transition-transform hover:scale-105">
         <ArrowLeftIcon className="icon-sm" />
         <small>Back</small>
       </button>
@@ -248,6 +244,50 @@ const CommentsComponent = () => {
       text: "Change the price of the this page. it should be $100.",
     },
     { user: { name: "Shahid", img: "/images/pfp.png" }, text: "Ok i have changes the price." },
+    {
+      user: { name: "Adnan Edi", img: "/images/pfp.png" },
+      text: "Change the price of the this page. it should be $100.",
+    },
+    {
+      user: { name: "Adnan Edi", img: "/images/pfp.png" },
+      text: "Change the price of the this page. it should be $100.",
+    },
+    {
+      user: { name: "Adnan Edi", img: "/images/pfp.png" },
+      text: "Change the price of the this page. it should be $100.",
+    },
+    {
+      user: { name: "Adnan Edi", img: "/images/pfp.png" },
+      text: "Change the price of the this page. it should be $100.",
+    },
+    {
+      user: { name: "Adnan Edi", img: "/images/pfp.png" },
+      text: "Change the price of the this page. it should be $100.",
+    },
+    {
+      user: { name: "Adnan Edi", img: "/images/pfp.png" },
+      text: "Change the price of the this page. it should be $100.",
+    },
+    {
+      user: { name: "Adnan Edi", img: "/images/pfp.png" },
+      text: "Change the price of the this page. it should be $100.",
+    },
+    {
+      user: { name: "Adnan Edi", img: "/images/pfp.png" },
+      text: "Change the price of the this page. it should be $100.",
+    },
+    {
+      user: { name: "Adnan Edi", img: "/images/pfp.png" },
+      text: "Change the price of the this page. it should be $100.",
+    },
+    {
+      user: { name: "Adnan Edi", img: "/images/pfp.png" },
+      text: "Change the price of the this page. it should be $100.",
+    },
+    {
+      user: { name: "Adnan Edi", img: "/images/pfp.png" },
+      text: "Change the price of the this page. it should be $100.",
+    },
     {
       user: { name: "Adnan Edi", img: "/images/pfp.png" },
       text: "Change the price of the this page. it should be $100.",

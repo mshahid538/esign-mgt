@@ -1,88 +1,73 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { PDFDownloadLink, Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
+import { Fragment } from "react";
+import { useEditorStore } from "@/store/store";
+import { styles } from "@/components/ui/pdfStyles";
+import { GripVerticalIcon, PlusCircleIcon } from "lucide-react";
+import { DndContext, closestCenter } from "@dnd-kit/core";
+import { SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
-// Define styles for the PDF
-const styles = StyleSheet.create({
-  page: {
-    width: "100%",
-    height: "100%",
-    flexDirection: "column",
-    backgroundColor: "#E4E4E4",
-    padding: 20,
-  },
-  section: {
-    margin: 10,
-    padding: 10,
-    borderBottom: "1px solid #ccc",
-  },
-  headingList: {
-    margin: 10,
-    padding: 10,
-    listStyleType: "none",
-    width: "100%",
-    maxWidth: "600px",
-  },
-  headingItem: {
-    marginBottom: 5,
-    padding: 5,
-    borderBottom: "1px solid #ccc",
-  },
-});
+export default function EditorCanvas() {
+  const blocks = useEditorStore((state) => state.blocks);
+  const reorderBlocks = useEditorStore((state) => state.reorderBlocks);
 
-const MyDocument = ({ headings }) => (
-  <Document>
-    <Page size="A4" style={styles.page}>
-      {headings.map((heading, index) => (
-        <View style={styles.section} key={index}>
-          <Text>{heading}</Text>
-        </View>
-      ))}
-    </Page>
-  </Document>
-);
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
 
-const App = () => {
-  const [isClient, setIsClient] = useState(false);
-  const [headings, setHeadings] = useState(["Section #1", "Section #2"]);
+    if (active.id !== over.id) {
+      const oldIndex = blocks.findIndex((block) => block.id === active.id);
+      const newIndex = blocks.findIndex((block) => block.id === over.id);
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  const addHeading = () => {
-    const newHeading = prompt("Enter the heading:");
-    if (newHeading) {
-      setHeadings([...headings, newHeading]);
+      reorderBlocks(oldIndex, newIndex);
     }
   };
 
-  if (!isClient) {
-    return <section className="flex-1"></section>;
-  }
-
   return (
-    <section className="flex-1">
-      <div>
-        <button className="btn-p" onClick={addHeading}>
-          Add Heading
-        </button>
-        <ul style={styles.headingList}>
-          {headings.map((heading, index) => (
-            <li key={index} style={styles.headingItem}>
-              {heading}
-            </li>
-          ))}
-        </ul>
-        <div className="btn-p">
-          <PDFDownloadLink document={<MyDocument headings={headings} />} fileName="example.pdf">
-            {({ loading }) => (loading ? "Loading document..." : "Download PDF")}
-          </PDFDownloadLink>
+    <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+      <SortableContext items={blocks} strategy={verticalListSortingStrategy}>
+        <section className="p-md flex-1 overflow-scroll bg-dark/10" style={{ boxShadow: "" }}>
+          <div style={styles.page}>
+            {blocks.map((block) => (
+              <Fragment key={block.id}>
+                <Divider />
+                <SortableBlock id={block.id} data={block} />
+              </Fragment>
+            ))}
+            <Divider />
+          </div>
+          <br />
+          <div style={styles.page} />
+        </section>
+      </SortableContext>
+    </DndContext>
+  );
+}
+
+const Divider = () => {
+  return (
+    <div className="relative">
+      <div className="group absolute top-1/2 flex h-6 w-full -translate-y-1/2 items-center justify-center transition-all">
+        <div className="relative flex h-0.5 w-full items-center justify-center rounded-full bg-primary opacity-0 transition-opacity group-hover:opacity-100">
+          <PlusCircleIcon className="absolute h-5 w-5 cursor-pointer rounded-full bg-primary text-light transition-transform hover:scale-125" />
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 
-export default App;
+const SortableBlock = ({ id, data }) => {
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style} className="py-sm flex items-center">
+      <GripVerticalIcon className="text-dark/50 cursor-grab active:cursor-grabbing" {...attributes} {...listeners} />
+      <h6>{data.name}</h6>
+    </div>
+  );
+};

@@ -1,8 +1,9 @@
 "use client";
 
-import { PanelTopCloseIcon, PanelTopOpenIcon, SearchIcon, UploadIcon } from "lucide-react";
+import { SearchIcon, UploadIcon } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
+import EditorPanelBtn from "../ui/editorPanelBtn";
 
 export default function EditorLeftPanel() {
   const [panelIsOpen, setPanelIsOpen] = useState(true);
@@ -26,18 +27,7 @@ export default function EditorLeftPanel() {
         panelIsOpen ? "h-full shadow-xl" : "absolute h-9 z-50 overflow-hidden"
       } w-60 2xl:w-72 overflow-scroll`}
     >
-      <div className="overflow-hidden rounded-b-lg bg-light">
-        <button
-          onClick={togglePanel}
-          className="group flex w-full items-center justify-center bg-dark/5 p-2 hover:bg-dark/10"
-        >
-          {panelIsOpen ? (
-            <PanelTopCloseIcon className="icon transition-transform group-hover:scale-110" />
-          ) : (
-            <PanelTopOpenIcon className="icon transition-transform group-hover:scale-110" />
-          )}
-        </button>
-      </div>
+      <EditorPanelBtn isOpen={panelIsOpen} onClick={togglePanel} />
       {panelIsOpen ? (
         <>
           <nav className="sticky top-0 z-50 flex justify-evenly border-b-[1.5px] border-dark/20 bg-light">
