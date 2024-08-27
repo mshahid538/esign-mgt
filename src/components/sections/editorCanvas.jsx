@@ -126,12 +126,8 @@ const RenderBlock = ({ block }) => {
   switch (block.type) {
     case "Headings":
       return <HeadingBlock data={block} />;
-    case "Paragraph":
-      return <ParagraphBlock data={block} />;
-    case "Image":
-      return <ImageBlock data={block} />;
     default:
-      return null;
+      return <DefaultBlock data={block} />;
   }
 };
 
@@ -202,8 +198,13 @@ const HeadingBlock = ({ data }) => {
             onClick={toggleSettingsMenu}
             className="fixed left-0 top-0 z-40 h-full w-full cursor-pointer bg-dark/50"
           />
-          <div className="p-xs gap-xs fixed left-1/2 top-1/2 z-50 flex -translate-x-1/2 -translate-y-1/2 flex-col gap-sm rounded-xl border bg-light shadow-lg">
-            <span className="border-b-2 p-xs">Heading Settings</span>
+          <div className="p-xs gap-xs gap-sm fixed left-1/2 top-1/2 z-50 flex -translate-x-1/2 -translate-y-1/2 flex-col rounded-xl border bg-light shadow-lg">
+            <span className="p-xs border-b-2">Heading Settings</span>
+            <input
+              value={block.content.value}
+              onChange={(e) => setBlock({ ...block, content: { ...block.content, value: e.target.value } })}
+              type="text"
+            />
             <select
               value={block.settings.level}
               onChange={(e) => setBlock({ ...block, settings: { ...block.settings, level: e.target.value } })}
@@ -215,7 +216,7 @@ const HeadingBlock = ({ data }) => {
               <option value="h5">H5</option>
               <option value="h5">H6</option>
             </select>
-            <span className="flex gap-xs">
+            <span className="gap-xs flex">
               <input
                 id="fontStyleId"
                 className="w-fit"
@@ -233,10 +234,6 @@ const HeadingBlock = ({ data }) => {
   );
 };
 
-const ParagraphBlock = () => {
-  return renderHeading();
-};
-
-const ImageBlock = () => {
-  return <h1></h1>;
+const DefaultBlock = ({ data }) => {
+  return <h3>{data.type}</h3>;
 };
