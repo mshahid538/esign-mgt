@@ -7,6 +7,14 @@ import {
   TextIcon,
   UserCogIcon,
   UsersIcon,
+  ImagePlusIcon,
+  ListChecksIcon,
+  ReceiptIcon,
+  SignatureIcon,
+  TableIcon,
+  TextSelectIcon,
+  YoutubeIcon,
+  CaseSensitiveIcon,
 } from "lucide-react";
 
 export const menus = {
@@ -23,3 +31,14 @@ export const menus = {
     ],
   },
 };
+
+export const blocks = [
+  { id: 0, name: "Headings", icon: CaseSensitiveIcon },
+  { id: 1, name: "Paragraph", icon: TextSelectIcon },
+  { id: 2, name: "Image", icon: ImagePlusIcon },
+  { id: 3, name: "Video", icon: YoutubeIcon },
+  { id: 4, name: "Table", icon: TableIcon },
+  { id: 5, name: "List", icon: ListChecksIcon },
+  { id: 6, name: "Quote", icon: ReceiptIcon },
+  { id: 7, name: "Signature", icon: SignatureIcon },
+];

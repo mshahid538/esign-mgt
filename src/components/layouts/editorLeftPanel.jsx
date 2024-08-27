@@ -24,13 +24,13 @@ export default function EditorLeftPanel() {
   return (
     <aside
       className={`${
-        panelIsOpen ? "h-full shadow-xl" : "absolute h-9 z-50 overflow-hidden"
+        panelIsOpen ? "h-full shadow-xl" : "absolute h-9 z-30 overflow-hidden"
       } w-60 2xl:w-72 overflow-scroll`}
     >
       <EditorPanelBtn isOpen={panelIsOpen} onClick={togglePanel} />
       {panelIsOpen ? (
         <>
-          <nav className="sticky top-0 z-50 flex justify-evenly border-b-[1.5px] border-dark/20 bg-light">
+          <nav className="sticky top-0 z-30 flex justify-evenly border-b-[1.5px] border-dark/20 bg-light">
             {tabs.map((tab, i) => (
               <span
                 className={`relative cursor-pointer group hover:scale-110 transition-all py-3 select-none text-sm ${

@@ -1,24 +1,12 @@
 "use client";
 
-import {
-  ArrowLeftIcon,
-  CaseSensitiveIcon,
-  GalleryVerticalIcon,
-  ImagePlusIcon,
-  ListChecksIcon,
-  PaletteIcon,
-  PenLineIcon,
-  ReceiptIcon,
-  SignatureIcon,
-  TableIcon,
-  TextSelectIcon,
-  YoutubeIcon,
-} from "lucide-react";
+import { ArrowLeftIcon, CaseSensitiveIcon, GalleryVerticalIcon, PaletteIcon, PenLineIcon } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
 import Image from "next/image";
 import { useState } from "react";
 import EditorPanelBtn from "../ui/editorPanelBtn";
 import { useEditorStore } from "@/store/store";
+import { blocks } from "@/constants/data";
 
 export default function EditorRightPanel() {
   const [panelIsOpen, setPanelIsOpen] = useState(true);
@@ -39,13 +27,13 @@ export default function EditorRightPanel() {
   return (
     <aside
       className={`${
-        panelIsOpen ? "h-full shadow-xl" : "absolute right-0 h-9 z-50 overflow-hidden"
+        panelIsOpen ? "h-full shadow-xl" : "absolute right-0 h-9 z-30 overflow-hidden"
       } w-60 2xl:w-72 overflow-scroll`}
     >
       <EditorPanelBtn isOpen={panelIsOpen} onClick={togglePanel} />
       {panelIsOpen ? (
         <>
-          <nav className="sticky top-0 z-50 flex justify-evenly border-b-[1.5px] border-dark/20 bg-light">
+          <nav className="sticky top-0 z-30 flex justify-evenly border-b-[1.5px] border-dark/20 bg-light">
             {tabs.map((tab, i) => (
               <span
                 className={`relative cursor-pointer group hover:scale-110 transition-all py-3 select-none text-sm ${
@@ -66,17 +54,6 @@ export default function EditorRightPanel() {
 }
 
 const BlocksComponent = () => {
-  const blocks = [
-    { id: 0, name: "Headings", icon: CaseSensitiveIcon },
-    { id: 1, name: "Paragraph", icon: TextSelectIcon },
-    { id: 2, name: "Image", icon: ImagePlusIcon },
-    { id: 3, name: "Video", icon: YoutubeIcon },
-    { id: 4, name: "Table", icon: TableIcon },
-    { id: 5, name: "List", icon: ListChecksIcon },
-    { id: 6, name: "Quote", icon: ReceiptIcon },
-    { id: 7, name: "Signature", icon: SignatureIcon },
-  ];
-
   return (
     <section className="p-xs">
       <nav className="gap-xs grid grid-cols-2">
@@ -93,7 +70,14 @@ const Block = ({ data }) => {
 
   return (
     <div
-      onClick={() => addBlock({ id: uuidv4(), name: data.name, icon: data.icon })}
+      onClick={() =>
+        addBlock({
+          id: uuidv4(),
+          type: data.name,
+          content: { value: "This is heading" },
+          settings: { level: "h2", color: "#936d66", fontStyle: "italic" },
+        })
+      }
       className="gap-xs p-xs flex cursor-pointer select-none flex-col items-center justify-center rounded-lg text-sm transition-all hover:scale-105 hover:bg-primary/5 active:bg-primary/20"
     >
       <data.icon className="h-6 w-6 text-dark/60" />
