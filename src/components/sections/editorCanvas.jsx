@@ -9,6 +9,11 @@ import { DndContext, closestCenter } from "@dnd-kit/core";
 import { SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { blocks as blockTypes } from "@/constants/data";
+import PanelModal from "../ui/panelModal";
+import HeadingBlock from "@/components/sections/blocks/headingBlock";
+import ParagraphBlock from "./blocks/paragraphBlock";
+import ListBlock from "./blocks/listBlock";
+import ImageBlock from "./blocks/imageBlock";
 
 export default function EditorCanvas() {
   const blocks = useEditorStore((state) => state.blocks);
@@ -61,17 +66,25 @@ const BlockWrapper = ({ id, data }) => {
         {...attributes}
         {...listeners}
       />
-      <RenderBlock block={data} />
+      <div className="h-auto flex-1">
+        <RenderBlock block={data} />
+      </div>
     </div>
   );
 };
 
 const Divider = ({ index }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const addBlockAt = useEditorStore((state) => state.addBlockAt);
 
   function toggleMenu() {
     setIsOpen((prev) => !prev);
   }
+
+  const handleAddBlock = (newBlock) => {
+    addBlockAt(index, newBlock);
+    toggleMenu();
+  };
 
   return (
     <div className="relative">
@@ -83,42 +96,28 @@ const Divider = ({ index }) => {
           />
         </div>
       </div>
-      {isOpen ? <CreateBlock toggleMenu={toggleMenu} index={index} /> : null}
+      <PanelModal togglePanel={toggleMenu} isOpen={isOpen}>
+        <nav className="gap-xs grid grid-cols-2">
+          {blockTypes.map((block, i) => (
+            <div
+              key={i}
+              onClick={() =>
+                handleAddBlock({
+                  id: uuidv4(),
+                  type: block.name,
+                  content: { value: block.name },
+                  settings: {},
+                })
+              }
+              className="gap-xs p-xs flex cursor-pointer select-none flex-col items-center justify-center rounded-lg text-sm transition-all hover:scale-105 hover:bg-primary/5 active:bg-primary/20"
+            >
+              <block.icon className="h-6 w-6 text-dark/60" />
+              <p className="text-sm">{block.name}</p>
+            </div>
+          ))}
+        </nav>
+      </PanelModal>
     </div>
-  );
-};
-
-const CreateBlock = ({ toggleMenu, index }) => {
-  const addBlockAt = useEditorStore((state) => state.addBlockAt);
-
-  const handleAddBlock = (newBlock) => {
-    addBlockAt(index, newBlock);
-    toggleMenu();
-  };
-
-  return (
-    <section className="relative">
-      <div onClick={toggleMenu} className="fixed left-0 top-0 z-40 h-full w-full cursor-pointer bg-dark/50" />
-      <nav className="p-xs gap-xs fixed left-1/2 top-1/2 z-50 grid -translate-x-1/2 -translate-y-1/2 grid-cols-2 rounded-xl border bg-light shadow-lg">
-        {blockTypes.map((block, i) => (
-          <div
-            key={i}
-            onClick={() =>
-              handleAddBlock({
-                id: uuidv4(),
-                type: block.name,
-                content: { value: "This is heading" },
-                settings: { level: "h2" },
-              })
-            }
-            className="gap-xs p-xs flex cursor-pointer select-none flex-col items-center justify-center rounded-lg text-sm transition-all hover:scale-105 hover:bg-primary/5 active:bg-primary/20"
-          >
-            <block.icon className="h-6 w-6 text-dark/60" />
-            <p className="text-sm">{block.name}</p>
-          </div>
-        ))}
-      </nav>
-    </section>
   );
 };
 
@@ -126,112 +125,15 @@ const RenderBlock = ({ block }) => {
   switch (block.type) {
     case "Headings":
       return <HeadingBlock data={block} />;
+    case "Paragraph":
+      return <ParagraphBlock data={block} />;
+    case "Image":
+      return <ImageBlock data={block} />;
+    case "List":
+      return <ListBlock data={block} />;
     default:
       return <DefaultBlock data={block} />;
   }
-};
-
-const HeadingBlock = ({ data }) => {
-  const [settingsMenu, setSettingsMenu] = useState(false);
-  const [block, setBlock] = useState(data);
-
-  const styles = {
-    color: block.settings.color,
-    fontStyle: block.settings.fontStyle,
-  };
-
-  function toggleSettingsMenu() {
-    setSettingsMenu((prev) => !prev);
-  }
-
-  const renderHeading = () => {
-    switch (block.settings.level) {
-      case "h1":
-        return (
-          <h1 onClick={toggleSettingsMenu} style={styles}>
-            {block.content.value}
-          </h1>
-        );
-      case "h2":
-        return (
-          <h2 onClick={toggleSettingsMenu} style={styles}>
-            {block.content.value}
-          </h2>
-        );
-      case "h3":
-        return (
-          <h3 onClick={toggleSettingsMenu} style={styles}>
-            {block.content.value}
-          </h3>
-        );
-      case "h4":
-        return (
-          <h4 onClick={toggleSettingsMenu} style={styles}>
-            {block.content.value}
-          </h4>
-        );
-      case "h5":
-        return (
-          <h5 onClick={toggleSettingsMenu} style={styles}>
-            {block.content.value}
-          </h5>
-        );
-      default:
-        return (
-          <h6 onClick={toggleSettingsMenu} style={styles}>
-            {block.content.value}
-          </h6>
-        );
-    }
-  };
-
-  function toggleItalic() {
-    if (block.settings.fontStyle === "italic") setBlock({ ...block, settings: { ...block.settings, fontStyle: "" } });
-    else setBlock({ ...block, settings: { ...block.settings, fontStyle: "italic" } });
-  }
-
-  return (
-    <>
-      {settingsMenu ? (
-        <section className="relative">
-          <div
-            onClick={toggleSettingsMenu}
-            className="fixed left-0 top-0 z-40 h-full w-full cursor-pointer bg-dark/50"
-          />
-          <div className="p-xs gap-xs gap-sm fixed left-1/2 top-1/2 z-50 flex -translate-x-1/2 -translate-y-1/2 flex-col rounded-xl border bg-light shadow-lg">
-            <span className="p-xs border-b-2">Heading Settings</span>
-            <input
-              value={block.content.value}
-              onChange={(e) => setBlock({ ...block, content: { ...block.content, value: e.target.value } })}
-              type="text"
-            />
-            <select
-              value={block.settings.level}
-              onChange={(e) => setBlock({ ...block, settings: { ...block.settings, level: e.target.value } })}
-            >
-              <option value="h1">H1</option>
-              <option value="h2">H2</option>
-              <option value="h3">H3</option>
-              <option value="h4">H4</option>
-              <option value="h5">H5</option>
-              <option value="h5">H6</option>
-            </select>
-            <span className="gap-xs flex">
-              <input
-                id="fontStyleId"
-                className="w-fit"
-                onChange={toggleItalic}
-                checked={block.settings.fontStyle === "italic"}
-                type="checkbox"
-              />
-              <label htmlFor="fontStyleId">Italic</label>
-            </span>
-          </div>
-        </section>
-      ) : null}
-      {renderHeading()}
-    </>
-  );
 };
 
 const DefaultBlock = ({ data }) => {

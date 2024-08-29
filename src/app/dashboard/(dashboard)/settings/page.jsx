@@ -1,6 +1,6 @@
 "use client";
 
-import Input from "@/components/ui/input";
+import { Input, Password } from "@/components/ui/input";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -52,7 +52,7 @@ const AccountSecurity = () => {
       <CardTitle title={"Account Security"} description={"Protect your account"} />
       <div className="gap-md grid flex-1">
         <Input disabled type="email" value={email} onChange={updateFields} placeholder={"Email"} />
-        <Input disabled type="password" value={password} onChange={updateFields} placeholder={"Password"} />
+        <Password disabled value={password} onChange={updateFields} placeholder={"Password"} />
       </div>
     </section>
   );

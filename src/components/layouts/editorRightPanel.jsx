@@ -74,8 +74,8 @@ const Block = ({ data }) => {
         addBlock({
           id: uuidv4(),
           type: data.name,
-          content: { value: "This is heading" },
-          settings: { level: "h2", color: "#936d66", fontStyle: "italic" },
+          content: { value: data.name },
+          settings: {},
         })
       }
       className="gap-xs p-xs flex cursor-pointer select-none flex-col items-center justify-center rounded-lg text-sm transition-all hover:scale-105 hover:bg-primary/5 active:bg-primary/20"
