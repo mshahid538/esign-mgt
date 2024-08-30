@@ -14,6 +14,7 @@ import HeadingBlock from "@/components/sections/blocks/headingBlock";
 import ParagraphBlock from "./blocks/paragraphBlock";
 import ListBlock from "./blocks/listBlock";
 import ImageBlock from "./blocks/imageBlock";
+import TableBlock from "./blocks/tableBlock";
 
 export default function EditorCanvas() {
   const blocks = useEditorStore((state) => state.blocks);
@@ -131,6 +132,8 @@ const RenderBlock = ({ block }) => {
       return <ImageBlock data={block} />;
     case "List":
       return <ListBlock data={block} />;
+    case "Table":
+      return <TableBlock data={block} />;
     default:
       return <DefaultBlock data={block} />;
   }
